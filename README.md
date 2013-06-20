@@ -7,6 +7,8 @@ For example if you typically run
 	
 Now that the plugin is installed in your Maven cache, you can integrate the wrapper with your existing or new Maven projects.
 
+If possible, it's better to publish the Maven wrapper build artifact to your Corporate/Internal Repository Manager, as this plugin is not available on Maven central.
+
 The wrapper will __always__ use your current Maven version.
 A wrapper created with Maven 3.0.4 will request Maven 3.0.4 if it's not already installed on the user's machine.	
 
