@@ -84,7 +84,7 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
 
                         File baseDir = project.getBasedir();
 
-                        final String[] launcherFileNames = { LAUNCHER_WINDOWS_FILE_NAME, LAUNCHER_WINDOWS_FILE_NAME };
+                        final String[] launcherFileNames = { LAUNCHER_WINDOWS_FILE_NAME, LAUNCHER_UNIX_FILE_NAME };
                         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
                         
                         for (String launcherFileName : launcherFileNames) {
