@@ -40,14 +40,15 @@ import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.ContextException;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 
 @Mojo(name = "wrapper", requiresProject = true)
 /**
  * Quick and dirty implementation of a Maven goal for the maven-wrapper project
  * <a href="https://github.com/bdemers/maven-wrapper">https://github.com/bdemers/maven-wrapper</a>.
- * 
+ *
  * Test with Maven 3.0.x
- * 
+ *
  * @author Yves Zoundi
  */
 public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
@@ -86,7 +87,7 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
 
                         final String[] launcherFileNames = { LAUNCHER_WINDOWS_FILE_NAME, LAUNCHER_UNIX_FILE_NAME };
                         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                        
+
                         for (String launcherFileName : launcherFileNames) {
                                 InputStream mvnLauncherStream = classLoader.getResourceAsStream(launcherFileName);
                                 File launcherFile = new File(baseDir, launcherFileName);
@@ -104,8 +105,10 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
                         Properties props = new Properties();
                         props.put(DISTRIBUTION_URL_PROPERTY, String.format(DIST_URL_TEMPLATE, mavenVersion, mavenVersion));
                         File file = new File(wrapperDestFolder, WRAPPER_PROPERTIES_FILE_NAME);
+                        
                         FileOutputStream fileOut = null;
                         InputStream is = null;
+                        
                         try {
                                 is = new FileInputStream(mainArtifact.getFile());
                                 writeToFile(is, new File(wrapperDestFolder, WRAPPER_JAR_FILE_NAME));
@@ -122,8 +125,11 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
                                 }
                         }
                 }
-                catch (Exception e) {
-                        throw new RuntimeException("Could not detect Maven version", e);
+                catch (ComponentLookupException cle) {
+                        throw new MojoExecutionException("Could not lookup Maven runtime information", cle);
+                }
+                catch (IOException ioe) {
+                        throw new MojoExecutionException("Unexpected IO Error", ioe);
                 }
         }
 
