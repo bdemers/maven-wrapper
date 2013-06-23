@@ -1,4 +1,5 @@
 This is a copy of the gradle wrapper ported for use with maven.
+This fork provides the Maven wrapper feature as a Maven plugin for more flexible reuse/integration.
 
 To run this build as an example run the 'mvnw' script at the root of this repo as you would normally run 'mvn'
 For example if you typically run 
