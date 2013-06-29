@@ -45,10 +45,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
 
 @Mojo(name = "wrapper", requiresProject = true)
 /**
- * Quick and dirty implementation of a Maven goal for the maven-wrapper project
- * <a href="https://github.com/bdemers/maven-wrapper">https://github.com/bdemers/maven-wrapper</a>.
- *
- * Test with Maven 3.0.x
+ * Generates a Maven Command Wrapper for the current project.
  *
  * @author Yves Zoundi
  */
@@ -73,6 +70,7 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
         private PluginDescriptor plugin;
 
         @Parameter(property = "baseDistributionUrl", defaultValue = "https://repository.apache.org/content/repositories/releases/org/apache/maven/apache-maven")
+        /** Base distribution URL for the Maven binaries download. The default base distribution URL is https://repository.apache.org/content/repositories/releases/org/apache/maven/apache-maven*/
         private String baseDistributionUrl;
 
         public void contextualize(Context context) throws ContextException {
