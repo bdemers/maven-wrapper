@@ -36,7 +36,7 @@ In the =build= section of your pom.xml, add the following :
  :   </plugins>
  : </build>
 
-As shown above an =baseDistributionUrl= setting can be provided as configuration parameter.
+As shown above an optional =baseDistributionUrl= setting can be provided as configuration parameter.
 
 The download URL pattern is =<baseDistributionUrl>/<mavenVersion>/apache-maven-<mavenVersion>-bin.zip=.
 	
