@@ -38,6 +38,8 @@ In the =build= section of your pom.xml, add the following :
 
 As shown above an optional =baseDistributionUrl= setting can be provided as configuration parameter.
 
+The default base distribution URL is https://repository.apache.org/content/repositories/releases/org/apache/maven/apache-maven.
+
 The download URL pattern is =<baseDistributionUrl>/<mavenVersion>/apache-maven-<mavenVersion>-bin.zip=.
 	
 ** Generating the Maven wrapper
