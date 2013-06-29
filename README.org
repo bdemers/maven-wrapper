@@ -1,0 +1,56 @@
+* Introduction
+This is a copy of the [[http://www.gradle.org/docs/current/userguide/gradle_wrapper.html][Gradle wrapper]] ported for use with [[http://maven.apache.org][Apache Maven]].
+This fork provides the Maven wrapper feature as a Maven plugin for more flexible reuse/integration.
+
+To run this build as an example run the 'mvnw' script at the root of this repo as you would normally run 'mvn'
+For example if you typically run 
+
+ : mvn clean install
+
+Then you would now run (without a leading =./= for MS Windows)
+ : ./mvnw clean install
+	
+Now that the plugin is installed in your Maven cache, you can integrate the wrapper with your existing or new Maven projects.
+
+
+The wrapper will **always** your current Maven version.
+A wrapper created with Maven 3.0.4 will request Maven 3.0.4 if it's not already installed on the user's machine.	
+
+* Usage
+
+** Integration
+In the =build= section of your pom.xml, add the following :
+
+ : <build>
+ :   <plugins>
+ :     <plugin>
+ :       <groupId>org.apache.maven</groupId>
+ :       <artifactId>wrapper-maven-plugin</artifactId>
+ :       <version>0.0.1-SNAPSHOT</version>
+ :       <!--
+ : 	 <configuration>
+ :   <baseDistributionUrl>http://mirrors.ibiblio.org/maven2/org/apache/maven/apache-maven/</baseDistributionUrl>         
+ :       </configuration>
+ :       -->
+ :     </plugin>
+ :   </plugins>
+ : </build>
+
+As shown above an =baseDistributionUrl= setting can be provided as configuration parameter.
+
+The download URL pattern is =<baseDistributionUrl>/<mavenVersion>/apache-maven-<mavenVersion>-bin.zip=.
+	
+** Generating the Maven wrapper
+Run the following command to generate the wrapper and supporting files.
+
+ : mvn wrapper:wrapper
+
+The =mvnw= and =mwnw.bat= command wrappers are generated at the root of the project folder.
+	
+The =maven/wrapper= folder is generated with the relevant jar and properties file in the project directory.
+
+
+You can now start using either the =mvnw= or =mvnw.bat= commands on any project without an existing maven installation!
+
+** Sharing the plugin among developers
+If possible, it's better to publish the Maven wrapper build artifact to your Corporate/Private Repository Manager, as this plugin is not available on Maven central.

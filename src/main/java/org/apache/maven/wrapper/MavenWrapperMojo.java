@@ -32,6 +32,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.rtinfo.RuntimeInformation;
@@ -53,7 +54,7 @@ import org.codehaus.plexus.component.repository.exception.ComponentLookupExcepti
  */
 public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
 
-        static final String DIST_URL_TEMPLATE = "https://repository.apache.org/content/repositories/releases/org/apache/maven/apache-maven/%s/apache-maven-%s-bin.zip";
+        static final String DIST_FILENAME_PATH_TEMPLATE = "%s/apache-maven-%s-bin.zip";
         static final String WRAPPER_PROPERTIES_FILE_NAME = "maven-wrapper.properties";
         static final String WRAPPER_ROOT_FOLDER_NAME = "maven";
         static final String WRAPPER_BASE_FOLDER_NAME = "wrapper";
@@ -70,6 +71,9 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
 
         @Component
         private PluginDescriptor plugin;
+
+        @Parameter(property = "baseDistributionUrl", defaultValue = "https://repository.apache.org/content/repositories/releases/org/apache/maven/apache-maven")
+        private String baseDistributionUrl;
 
         public void contextualize(Context context) throws ContextException {
                 container = (PlexusContainer) context.get(PlexusConstants.PLEXUS_KEY);
@@ -91,7 +95,7 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
                         for (String launcherFileName : launcherFileNames) {
                                 InputStream mvnLauncherStream = classLoader.getResourceAsStream(launcherFileName);
                                 File launcherFile = new File(baseDir, launcherFileName);
-                                writeToFile(mvnLauncherStream, launcherFile);
+                                inputStreamToFile(mvnLauncherStream, launcherFile);
 
                                 if (!launcherFile.setExecutable(true)) {
                                         getLog().warn("Could not set executable flag on file: " + launcherFile.getAbsolutePath());
@@ -102,16 +106,24 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
                         File wrapperDestFolder = new File(baseMavenFolder, WRAPPER_BASE_FOLDER_NAME);
                         wrapperDestFolder.mkdirs();
 
-                        Properties props = new Properties();
-                        props.put(DISTRIBUTION_URL_PROPERTY, String.format(DIST_URL_TEMPLATE, mavenVersion, mavenVersion));
-                        File file = new File(wrapperDestFolder, WRAPPER_PROPERTIES_FILE_NAME);
+                        Properties props = new Properties();                        
+                        StringBuilder sb = new StringBuilder(baseDistributionUrl);
                         
+                        if (!baseDistributionUrl.endsWith("/")) {
+                                sb.append('/');
+                        }
+
+                        sb.append(DIST_FILENAME_PATH_TEMPLATE);
+                        
+                        props.put(DISTRIBUTION_URL_PROPERTY, String.format(sb.toString(), mavenVersion, mavenVersion));
+                        File file = new File(wrapperDestFolder, WRAPPER_PROPERTIES_FILE_NAME);
+
                         FileOutputStream fileOut = null;
                         InputStream is = null;
-                        
+
                         try {
                                 is = new FileInputStream(mainArtifact.getFile());
-                                writeToFile(is, new File(wrapperDestFolder, WRAPPER_JAR_FILE_NAME));
+                                inputStreamToFile(is, new File(wrapperDestFolder, WRAPPER_JAR_FILE_NAME));
                                 fileOut = new FileOutputStream(file);
                                 props.store(fileOut, "Maven download properties");
 
@@ -120,6 +132,7 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
                                 if (fileOut != null) {
                                         fileOut.close();
                                 }
+
                                 if (is != null) {
                                         is.close();
                                 }
@@ -133,7 +146,7 @@ public class MavenWrapperMojo extends AbstractMojo implements Contextualizable {
                 }
         }
 
-        private static void writeToFile(InputStream stream, File filePath) throws IOException {
+        private static void inputStreamToFile(InputStream stream, File filePath) throws IOException {
                 FileChannel outChannel = null;
                 ReadableByteChannel inChannel = null;
                 FileOutputStream fos = null;
