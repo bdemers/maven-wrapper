@@ -8,9 +8,22 @@
   <artifactId>wrapper-maven-plugin</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Maven Wrapper</name>
-   <packaging>maven-plugin</packaging>
-   <properties>
-     <minimalMavenVersion>3.0.2</minimalMavenVersion>
+  <packaging>maven-plugin</packaging>
+  <description>Maven Command Wrapper</description>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:git:git@github.com:rimerosolutions/maven-wrapper-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:rimerosolutions/maven-wrapper-plugin.git</developerConnection>
+    <url>https://github.com/rimerosolutions/maven-wrapper</url>
+  </scm>
+  <properties>
+    <minimalMavenVersion>3.0.2</minimalMavenVersion>
   </properties>
   <dependencies>
     <dependency>
@@ -28,65 +41,63 @@
       <artifactId>maven-plugin-descriptor</artifactId>
       <version>2.2.1</version>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>${minimalMavenVersion}</version>
-    </dependency>  
+    </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      
       <!-- annotations are not needed for plugin execution so you can remove this dependency
            for execution with using provided scope -->
       <scope>provided</scope>
     </dependency>
     <!-- generated help mojo has a dependency to plexus-utils -->
-     <dependency>
+    <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>3.0.1</version>
-    </dependency>  
-    <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.11</version>
-        <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-all</artifactId>
-        <version>1.3</version>
-        <scope>test</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
-        <version>1.9.5</version>
-        <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>2.6</version>
-        <scope>test</scope>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.4</version>
-        <scope>test</scope>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.9.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+      <scope>test</scope>
     </dependency>
     <!-- Using zip util class, should be replaced with a zip lib  -->
     <dependency>
-        <groupId>org.apache.ant</groupId>
-        <artifactId>ant</artifactId>
-        <version>1.7.0</version>
-        <scope>test</scope>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.7.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
-    <build>
+  <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -96,7 +107,7 @@
           <!-- see http://jira.codehaus.org/browse/MNG-5346 -->
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
         </configuration>
-          <executions>
+        <executions>
           <execution>
             <id>mojo-descriptor</id>
             <goals>
@@ -109,8 +120,8 @@
               <goal>helpmojo</goal>
             </goals>
           </execution>
-        </executions> 
+        </executions>
       </plugin>
     </plugins>
-    </build>
+  </build>
 </project>
